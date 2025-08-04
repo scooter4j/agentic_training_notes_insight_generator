@@ -2,39 +2,13 @@
 
 import { useRef, useState } from "react";
 import {
-  RealtimeAgent,
   RealtimeItem,
   RealtimeSession,
   tool,
 } from "@openai/agents/realtime";
 import { getSessionToken } from "./server/token";
 import z from "zod";
-
-const getWeather = tool({
-  name: "getWeather",
-  description: "Get the weather in a given location",
-  parameters: z.object({
-    location: z.string(),
-  }),
-  execute: async ({ location }) => {
-    console.log("In the getWeather tool");
-    return `The weather in ${location} is sunny`;
-  },
-});
-
-const weatherAgent = new RealtimeAgent({
-  name: "Weather Agent",
-  instructions: "Talk with a New York accent",
-  handoffDescription: "This agent is an expert in weather",
-  tools: [getWeather],
-});
-
-const agent = new RealtimeAgent({
-  name: "Voice Agent",
-  instructions:
-    "You are a voice agent that can answer questions and help with tasks.",
-  handoffs: [weatherAgent],
-});
+import {entryAgent} from "@/agents/entryAgent";
 
 export default function Home() {
   const session = useRef<RealtimeSession | null>(null);
@@ -47,7 +21,8 @@ export default function Home() {
       await session.current?.close();
     } else {
       const token = await getSessionToken();
-      session.current = new RealtimeSession(agent, {
+      console.log(`[page]: about to start the entryAgent Realtime Agent`);
+      session.current = new RealtimeSession(entryAgent, {
         model: "gpt-4o-realtime-preview-2025-06-03",
       });
       session.current.on("transport_event", (event) => {
