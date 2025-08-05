@@ -1,5 +1,5 @@
 import {RealtimeAgent} from "@openai/agents/realtime";
-import {getDateRangeAgentTool, getDateRangeTool} from "@/agents/dateRangeAgent";
+import {dateRangeAgentAsTool, getDateRangeInNotesTool} from "@/agents/dateRangeAgent";
 import {getWeatherTool} from "@/agents/weatherAgent";
 
 export const entryAgent = new RealtimeAgent({
@@ -10,5 +10,5 @@ export const entryAgent = new RealtimeAgent({
         "For date-range questions, use the getDateRangeAgentTool;" +
         "For weather-related questions, use the getWeatherTool tool.",
     handoffs: [],
-    tools: [getDateRangeAgentTool, getWeatherTool],
+    tools: [dateRangeAgentAsTool, getWeatherTool],
 });

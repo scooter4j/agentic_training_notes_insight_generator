@@ -26,7 +26,8 @@ export default function Home() {
         model: "gpt-4o-realtime-preview-2025-06-03",
       });
       session.current.on("transport_event", (event) => {
-        console.log(event);
+        let i = 4;
+        // console.log(event);
       });
       session.current.on("history_updated", (history) => {
         setHistory(history);
